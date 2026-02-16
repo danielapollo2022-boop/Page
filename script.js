@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     initCartLogic(); // Inicializa o carrinho e carrega do LocalStorage
     initScrollReveal();
+    initAdmin();     // Inicializa a área administrativa e cores personalizadas
 });
 
 // =========================================
@@ -44,7 +45,6 @@ function updateThemeIcon(theme, btn) {
 // 3. LÓGICA DO CARRINHO (PERSISTÊNCIA)
 // =========================================
 
-// AQUI ESTÁ A MÁGICA: Tenta ler do LocalStorage, se não houver, cria array vazio
 let cart = JSON.parse(localStorage.getItem('sneakerCart')) || [];
 
 function initCartLogic() {
@@ -54,10 +54,8 @@ function initCartLogic() {
     const cartIcon = document.getElementById('cartIcon');
     const checkoutBtn = document.querySelector('.btn-checkout');
 
-    // Renderiza o carrinho imediatamente ao carregar a página
     renderCart();
 
-    // Funções de Abrir/Fechar
     window.toggleCart = () => {
         if(cartDrawer) {
             cartDrawer.classList.toggle('active');
@@ -70,7 +68,6 @@ function initCartLogic() {
     if(closeCart) closeCart.addEventListener('click', window.toggleCart);
     if(cartOverlay) cartOverlay.addEventListener('click', window.toggleCart);
 
-    // Checkout Simulado
     if(checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
             if(cart.length > 0) alert('Redirecionando para checkout...');
@@ -78,31 +75,27 @@ function initCartLogic() {
         });
     }
 
-    // --- CONFIGURAÇÃO DOS CARDS NA HOME (INDEX.HTML) ---
     const productCards = document.querySelectorAll('.product-card');
 
     productCards.forEach((card, index) => {
-        // A. CLIQUE NA IMAGEM -> REDIRECIONA
         const imgContainer = card.querySelector('.card-image');
         if(imgContainer) {
-            imgContainer.style.cursor = 'pointer';
             imgContainer.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.location.href = `produto.html?id=${index}`;
             });
         }
 
-        // B. CLIQUE NO BOTÃO -> ADICIONA AO CARRINHO
         const btn = card.querySelector('.add-cart-btn');
         if(btn) {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Impede clique na imagem
+                e.stopPropagation(); 
                 
                 const priceText = card.querySelector('.new-price').textContent;
                 const priceValue = parseFloat(priceText.replace('R$ ', '').replace('.', '').replace(',', '.'));
                 
                 const product = {
-                    id: index, // ID baseado na ordem da lista
+                    id: index, 
                     name: card.querySelector('.model').textContent,
                     price: priceValue,
                     image: card.querySelector('img').src,
@@ -111,7 +104,6 @@ function initCartLogic() {
 
                 addToCart(product);
                 
-                // Feedback Visual
                 const originalContent = btn.innerHTML;
                 btn.innerHTML = `<i data-lucide="check"></i> Adicionado`;
                 btn.style.color = 'var(--accent-color)';
@@ -131,29 +123,21 @@ function initCartLogic() {
     });
 }
 
-// Função Helper para Salvar no Navegador
 function saveCartToStorage() {
     localStorage.setItem('sneakerCart', JSON.stringify(cart));
 }
 
-// Função Global: Adicionar Item
-// (Tornamos window.addToCart acessível para o produto.js usar também)
 window.addToCart = function(product) {
-    // Verifica se já existe produto com mesmo ID
-    // OBS: Se quiser diferenciar por tamanho, precisaria mudar a lógica do ID para id + tamanho
     const existingItem = cart.find(item => item.id === product.id);
-    
     if (existingItem) {
         existingItem.quantity++;
     } else {
         cart.push(product);
     }
-    
-    saveCartToStorage(); // Salva sempre que altera
+    saveCartToStorage();
     renderCart();
 };
 
-// Função Global: Atualizar Quantidade (+ ou -)
 window.updateQuantity = (id, delta) => {
     const item = cart.find(item => item.id === id);
     if (item) {
@@ -161,18 +145,16 @@ window.updateQuantity = (id, delta) => {
         if (item.quantity <= 0) {
             cart = cart.filter(i => i.id !== id);
         }
-        saveCartToStorage(); // Salva sempre que altera
+        saveCartToStorage();
         renderCart();
     }
 };
 
-// Função: Renderizar HTML do Carrinho
 function renderCart() {
     const container = document.getElementById('cartItemsContainer');
     const totalElement = document.getElementById('cartTotalValue');
     const badgeElement = document.getElementById('cartCount');
     
-    // Proteção caso elementos não existam na página
     if(!container || !totalElement || !badgeElement) return;
     
     container.innerHTML = '';
@@ -207,7 +189,6 @@ function renderCart() {
     totalElement.textContent = total.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
     badgeElement.textContent = count;
 
-    // Só anima se houve mudança de quantidade (opcional)
     if (count > 0) {
         badgeElement.style.transform = 'scale(1.3)';
         setTimeout(() => badgeElement.style.transform = 'scale(1)', 200);
@@ -229,4 +210,89 @@ function initScrollReveal() {
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+// =========================================
+// 5. ÁREA ADMINISTRATIVA (SECURE & COLOR)
+// =========================================
+// =========================================
+// 5. ÁREA ADMINISTRATIVA (SECURE & COLOR)
+// =========================================
+function initAdmin() {
+    const trigger = document.getElementById('adminTrigger');
+    const panel = document.getElementById('adminPanel');
+    const closeBtn = document.getElementById('closeAdmin');
+    const colorPicker = document.getElementById('colorPicker');
+    const colorValue = document.getElementById('colorValue');
+    const resetBtn = document.getElementById('resetColor');
+    
+    const STORAGE_KEY = 'customPrimaryColor';
+    
+    // Cores originais do CSS para o Reset
+    const ORIGINAL_PRIMARY = '#8A2BE2'; // Roxo
+    const ORIGINAL_ACCENT = '#00D856';  // Verde Neon
+
+    // Carregar cor salva ao iniciar a página
+    const savedColor = localStorage.getItem(STORAGE_KEY);
+    if (savedColor) {
+        // Se houver cor salva, aplica ela em TUDO (Primária e Accent)
+        applyColor(savedColor, true); 
+        if(colorPicker) colorPicker.value = savedColor;
+    }
+
+    // Login com senha dz123
+    if (trigger) {
+        trigger.addEventListener('click', () => {
+            const password = prompt('🔐 Acesso Administrativo\nPor favor, insira a senha:');
+            if (password === 'dz123') {
+                panel.classList.add('active');
+                lucide.createIcons();
+            } else if (password !== null) {
+                alert('Acesso Negado: Senha incorreta.');
+            }
+        });
+    }
+
+    // Fechar painel
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            panel.classList.remove('active');
+        });
+    }
+
+    // Atualização dinâmica
+    if (colorPicker) {
+        colorPicker.addEventListener('input', (e) => {
+            const newColor = e.target.value;
+            // Aplica a mesma cor para Primária e Accent (unifica o tema)
+            applyColor(newColor, true); 
+            localStorage.setItem(STORAGE_KEY, newColor);
+        });
+    }
+
+    // Restaurar cores originais
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            // Restaura as cores originais DISTINTAS
+            document.documentElement.style.setProperty('--primary-color', ORIGINAL_PRIMARY);
+            document.documentElement.style.setProperty('--accent-color', ORIGINAL_ACCENT);
+            
+            if(colorValue) colorValue.textContent = ORIGINAL_PRIMARY;
+            if(colorPicker) colorPicker.value = ORIGINAL_PRIMARY;
+            
+            localStorage.removeItem(STORAGE_KEY);
+        });
+    }
+
+    // Função Helper para aplicar a cor
+    // O parametro 'syncAccent' define se o verde deve mudar também
+    function applyColor(color, syncAccent = false) {
+        document.documentElement.style.setProperty('--primary-color', color);
+        
+        if (syncAccent) {
+            document.documentElement.style.setProperty('--accent-color', color);
+        }
+
+        if(colorValue) colorValue.textContent = color.toUpperCase();
+    }
 }

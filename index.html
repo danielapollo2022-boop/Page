@@ -15,10 +15,6 @@
 </head>
 <body>
 
-    <button class="theme-toggle" id="themeToggle" aria-label="Alternar Tema">
-        <i data-lucide="moon"></i>
-    </button>
-
     <div class="cart-overlay" id="cartOverlay"></div>
 
     <div class="cart-drawer" id="cartDrawer">
@@ -63,10 +59,16 @@
 
             <div class="nav-icons">
                 <button class="icon-btn"><i data-lucide="search"></i></button>
+                
+                <button class="icon-btn" id="themeToggle" title="Alternar Tema">
+                    <i data-lucide="moon"></i>
+                </button>
+
                 <button class="icon-btn" id="cartIcon">
                     <i data-lucide="shopping-bag"></i>
                     <span class="cart-badge" id="cartCount">0</span>
                 </button>
+                
                 <div class="hamburger"><i data-lucide="menu"></i></div>
             </div>
         </div>
@@ -266,8 +268,33 @@
                 </div>
             </div>
         </div>
+
         <div style="text-align: center; color: var(--text-secondary); font-size: 0.8rem; padding-top: 20px; border-top: 1px solid var(--border-color);">
             &copy; 2023 SneakerDrop. Todos os direitos reservados.
+            
+            <span id="adminTrigger" style="cursor: pointer; opacity: 0.3; margin-left: 10px; transition: opacity 0.3s;" title="Área Restrita">
+                <i data-lucide="lock" size="12"></i> Acesso Restrito
+            </span>
+        </div>
+
+        <div id="adminPanel" class="admin-panel">
+            <div class="admin-header">
+                <h4><i data-lucide="settings" size="16"></i> Painel Admin</h4>
+                <button id="closeAdmin" class="icon-btn"><i data-lucide="x" size="16"></i></button>
+            </div>
+            
+            <div class="admin-body">
+                <label for="colorPicker">Cor Personalizada</label>
+                <div class="color-picker-wrapper">
+                    <input type="color" id="colorPicker" value="#8A2BE2">
+                    <span id="colorValue">#8A2BE2</span>
+                </div>
+                <p class="admin-hint">Altera a cor primária e destaques.</p>
+                
+                <button id="resetColor" class="btn-reset">
+                    <i data-lucide="rotate-ccw" size="14"></i> Restaurar Cores Originais
+                </button>
+            </div>
         </div>
     </footer>
 

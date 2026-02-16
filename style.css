@@ -455,6 +455,19 @@ header {
     overflow: hidden;
     position: relative;
     background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+/* Efeito visual ao passar o mouse na imagem */
+.card-image:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
 }
 
 .card-image img {
@@ -614,24 +627,6 @@ footer {
 .footer-col ul li a { color: var(--text-secondary); transition: 0.3s; }
 .footer-col ul li a:hover { color: var(--primary-color); }
 
-.theme-toggle {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* Responsividade Mobile */
 @media (max-width: 768px) {
     .nav-links { display: none; }
@@ -641,20 +636,124 @@ footer {
     .input-group { flex-direction: column; }
     .cart-drawer { max-width: 100%; right: -100%; }
 }
-/* Torna a imagem clicável visualmente */
-.card-image {
-    cursor: pointer;
-    position: relative; /* Mantém contexto para tags absolutas */
+
+/* =========================================
+   8. ÁREA ADMINISTRATIVA (HIDDEN)
+   ========================================= */
+
+.admin-panel {
+    position: fixed;
+    bottom: -300px; /* Escondido abaixo da tela */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 350px;
+    background: rgba(var(--surface-color-rgb), 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+    z-index: 2000;
+    padding: 20px;
+    transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    pointer-events: none;
 }
 
-/* Opcional: Efeito visual ao passar o mouse na imagem para indicar link */
-.card-image:hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+.admin-panel.active {
+    bottom: 20px;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.admin-header h4 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-body label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.color-picker-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--bg-color);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* Customização do Input Color */
+input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: none;
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+#colorValue {
+    font-family: monospace;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.admin-hint {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-reset {
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
     width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    pointer-events: none;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-reset:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
 }
