@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNEAKER DROP | Detalhes do Produto</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="cssejs/style.css">
+    <link rel="stylesheet" href="cssejs/produto.css">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Alternar Tema">
+        <i data-lucide="moon"></i>
+    </button>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Seu Carrinho</h3>
+            <button class="icon-btn" id="closeCart"><i data-lucide="x"></i></button>
+        </div>
+        <div class="cart-body" id="cartItemsContainer">
+            <p class="empty-cart-msg">Seu carrinho está vazio.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total:</span><span id="cartTotalValue">R$ 0,00</span></div>
+            <button class="btn btn-primary btn-checkout">Finalizar Compra <i data-lucide="check-circle"></i></button>
+        </div>
+    </div>
+
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">SNEAKER<span>DROP</span>.</a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#">Lançamentos</a>
+                <a href="#">Masculino</a>
+                <a href="#" style="color: var(--accent-color);">Sale</a>
+            </nav>
+            <div class="nav-icons">
+                <button class="icon-btn"><i data-lucide="search"></i></button>
+                <button class="icon-btn" id="cartIcon">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <div class="hamburger"><i data-lucide="menu"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="product-page-container">
+        <div class="container breadcrumbs reveal">
+            <a href="index.html">Home</a> / <a href="#">Nike</a> / <span id="breadcrumbModel">Carregando...</span>
+        </div>
+
+        <section class="product-detail container">
+            <div class="product-gallery reveal">
+                <div class="main-image-container glass-panel">
+                    <span class="discount-badge" id="discountBadge">20% OFF</span>
+                    <img id="mainImage" src="" alt="Imagem Principal do Tênis">
+                </div>
+                <div class="thumbnails" id="thumbnailsContainer">
+                    </div>
+            </div>
+
+            <div class="product-info reveal">
+                <div class="info-sticky-wrapper">
+                    
+                    <div class="product-header">
+                        <span class="brand-tag" id="brandTag">Marca</span>
+                        <h1 id="productName">Nome do Modelo</h1>
+                        <div class="rating-box">
+                            <div class="stars">
+                                <i data-lucide="star" fill="var(--accent-color)" class="star-filled"></i>
+                                <i data-lucide="star" fill="var(--accent-color)" class="star-filled"></i>
+                                <i data-lucide="star" fill="var(--accent-color)" class="star-filled"></i>
+                                <i data-lucide="star" fill="var(--accent-color)" class="star-filled"></i>
+                                <i data-lucide="star-half" fill="var(--accent-color)" class="star-filled"></i>
+                            </div>
+                            <span>(128 avaliações)</span>
+                        </div>
+                    </div>
+
+                    <div class="price-section glass-panel-sm">
+                        <span class="old-price" id="oldPrice">R$ 0,00</span>
+                        <div class="current-price-row">
+                            <span class="currency">R$</span>
+                            <span class="value" id="newPrice">0,00</span>
+                        </div>
+                        <p class="installments" id="installmentsInfo">em até 10x de R$ 00,00 sem juros</p>
+                    </div>
+
+                    <div class="urgency-trigger">
+                        <i data-lucide="flame"></i>
+                        <p><strong>Corra!</strong> <span id="viewersCount">14</span> pessoas estão vendo este tênis agora.</p>
+                    </div>
+
+                    <div class="size-section">
+                        <div class="size-header">
+                            <h3>Escolha o tamanho</h3>
+                            <a href="#" class="size-guide">Guia de medidas</a>
+                        </div>
+                        <div class="size-grid" id="sizeContainer">
+                            </div>
+                        <p class="error-msg" id="sizeError">Por favor, selecione um tamanho.</p>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-lg btn-add-cart" id="addToCartBtn">
+                            Adicionar ao Carrinho <i data-lucide="shopping-bag"></i>
+                        </button>
+                    </div>
+
+                    <div class="trust-badges">
+                        <div class="badge-item">
+                            <i data-lucide="shield-check"></i>
+                            <span>Compra Segura</span>
+                        </div>
+                        <div class="badge-item">
+                            <i data-lucide="truck"></i>
+                            <span>Frete Grátis*</span>
+                        </div>
+                        <div class="badge-item">
+                            <i data-lucide="refresh-cw"></i>
+                            <span>Troca Fácil</span>
+                        </div>
+                    </div>
+
+                    <div class="shipping-calc glass-panel-sm">
+                        <h3>Calcular Frete</h3>
+                        <div class="input-row">
+                            <input type="text" placeholder="Seu CEP" maxlength="9">
+                            <button class="btn-outline">OK</button>
+                        </div>
+                    </div>
+
+                    <div class="product-description">
+                        <h3>Sobre o Drop</h3>
+                        <p id="productDescription">Carregando descrição...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews container reveal">
+            <h2>O que dizem os Sneakerheads</h2>
+            <div class="reviews-grid">
+                <div class="review-card glass-panel">
+                    <div class="review-header">
+                        <strong>Lucas M.</strong>
+                        <div class="stars-mini">★★★★★</div>
+                    </div>
+                    <p>"Qualidade surreal! Chegou em 2 dias e o acabamento é impecável. O drop valeu cada centavo."</p>
+                </div>
+                <div class="review-card glass-panel">
+                    <div class="review-header">
+                        <strong>Ana Clara</strong>
+                        <div class="stars-mini">★★★★★</div>
+                    </div>
+                    <p>"Estava namorando esse modelo há meses. Super confortável e estiloso."</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" class="logo" style="font-size: 1.2rem;">SNEAKER<span>DROP</span>.</a>
+                <p style="margin-top: 15px; color: var(--text-secondary); font-size: 0.9rem;">
+                    O destino número um para sneakerheads.
+                </p>
+            </div>
+            </div>
+        <div style="text-align: center; color: var(--text-secondary); font-size: 0.8rem; padding-top: 20px; border-top: 1px solid var(--border-color);">
+            &copy; 2023 SneakerDrop. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script src="cssejs/script.js"></script> <script src="cssejs/produto.js"></script> </body>
+</html>
