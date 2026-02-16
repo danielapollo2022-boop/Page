@@ -53,7 +53,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Classes Utilitárias de Aceleração de Hardware */
         .gpu-accelerate {
             transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
@@ -66,7 +65,6 @@
             padding: 0 20px;
         }
 
-        /* Glassmorphism Otimizado (backdrop-filter pode ser pesado, usado com moderação) */
         .glass {
             background: var(--bg-glass);
             backdrop-filter: blur(12px);
@@ -74,7 +72,6 @@
             border: 1px solid var(--border-glass);
         }
 
-        /* Header */
         header {
             position: fixed;
             top: 0;
@@ -100,26 +97,23 @@
             font-weight: 700;
         }
 
-        /* Hero Section (Critical Fold) */
         .hero {
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            /* Gradiente CSS puro no lugar de imagem pesada inicial */
             background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             padding-top: var(--header-h);
             position: relative;
             overflow: hidden;
         }
         
-        /* Imagem de fundo carregada via CSS mas com opacidade reduzida */
         .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://images.unsplash.com/photo-1514362545857-3bc16549766b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=60') center/cover no-repeat;
+            background: url('https://images.unsplash.com/photo-1514362545857-3bc16549766b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
             opacity: 0.3;
             z-index: 0;
         }
@@ -129,7 +123,6 @@
             z-index: 1;
             max-width: 800px;
             padding: 20px;
-            /* Animação inicial apenas com opacity/transform */
             opacity: 0;
             animation: heroFadeIn 1s ease-out forwards;
         }
@@ -148,7 +141,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Botões */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -173,10 +165,8 @@
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
         }
 
-        /* Layout Grid e Cards */
         .menu-section {
             padding: 80px 0;
-            /* Content Visibility: Melhora performance de renderização em páginas longas */
             content-visibility: auto; 
             contain-intrinsic-size: 1000px;
         }
@@ -194,7 +184,7 @@
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease;
-            will-change: transform; /* Dica para o browser preparar otimização */
+            will-change: transform;
             position: relative;
         }
         
@@ -202,11 +192,10 @@
             transform: translateY(-8px);
         }
 
-        /* CLS Prevention: Aspect Ratio Container */
         .img-container {
             width: 100%;
             aspect-ratio: 16/10;
-            background-color: #1e293b; /* Placeholder color */
+            background-color: #1e293b;
             overflow: hidden;
             position: relative;
         }
@@ -239,7 +228,6 @@
             border-top: 1px solid var(--border-glass);
         }
 
-        /* Inputs e Filtros */
         .controls {
             display: flex;
             flex-direction: column;
@@ -294,7 +282,6 @@
             border-color: var(--primary-gold);
         }
 
-        /* Cart Drawer (Off-canvas) */
         .drawer-overlay {
             position: fixed;
             inset: 0;
@@ -330,7 +317,6 @@
             padding: 20px;
         }
 
-        /* Utilitários de Fade/Slide para JS Observer */
         .reveal-node {
             opacity: 0;
             transform: translateY(20px);
@@ -341,9 +327,8 @@
             transform: translateY(0);
         }
 
-        /* Nav Desktop */
         nav ul { display: flex; gap: 30px; list-style: none; }
-        nav a { color: var(--text-main); font-weight: 500; font-size: 0.9rem; }
+        nav a { color: var(--text-main); font-weight: 500; font-size: 0.9rem; text-decoration: none; }
         
         @media (max-width: 768px) {
             nav ul { display: none; }
@@ -413,8 +398,7 @@
             <h3 style="font-family: var(--font-serif); color: var(--primary-gold);">Seu Pedido</h3>
             <button id="closeCart" style="background:none; border:none; color:white; font-size: 1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="drawer-body" id="cartItems">
-            </div>
+        <div class="drawer-body" id="cartItems"></div>
         <div style="padding: 20px; background: rgba(0,0,0,0.2);">
             <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem;">
                 <span>Total</span>
@@ -425,53 +409,48 @@
     </aside>
 
     <script defer>
-        /* =========================================
-           DADOS E ESTADO (DATABASE & STATE)
-           ========================================= */
         const DB = [
-            { id: 1, n: "Carpaccio Trufado", p: 68, c: "entradas", d: "Wagyu, azeite trufado e parmesão.", i: "https://images.unsplash.com/photo-1544510802-5e4c02927233?auto=format&fit=crop&w=400&q=60" },
-            { id: 2, n: "Tartare de Atum", p: 55, c: "entradas", d: "Atum fresco, abacate e ponzu.", i: "https://images.unsplash.com/photo-1548602705-7f3945a0b59b?auto=format&fit=crop&w=400&q=60" },
-            { id: 3, n: "Bruschetta Gold", p: 42, c: "entradas", d: "Burrata, tomate confit e pó de ouro.", i: "https://images.unsplash.com/photo-1572695157369-a29444a82f10?auto=format&fit=crop&w=400&q=60" },
-            { id: 4, n: "Ostras Gratinadas", p: 75, c: "entradas", d: "Ostras frescas com queijo gruyère.", i: "https://images.unsplash.com/photo-1550951179-81878d2273e0?auto=format&fit=crop&w=400&q=60" },
-            { id: 5, n: "Ceviche Molecular", p: 59, c: "entradas", d: "Peixe branco e espuma cítrica.", i: "https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=400&q=60" },
-            { id: 6, n: "Croquetas de Pato", p: 48, c: "entradas", d: "Pato confit com geléia de pimenta.", i: "https://images.unsplash.com/photo-1598108422770-e4142f36f882?auto=format&fit=crop&w=400&q=60" },
-            { id: 7, n: "Salada Aura", p: 45, c: "entradas", d: "Figos, nozes e redução balsâmica.", i: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=60" },
-            { id: 8, n: "Risoto de Lagosta", p: 145, c: "principais", d: "Arroz arbóreo e cauda grelhada.", i: "https://images.unsplash.com/photo-1595295333158-4742f28fbd85?auto=format&fit=crop&w=400&q=60" },
-            { id: 9, n: "Wagyu A5 Steak", p: 280, c: "principais", d: "O corte mais nobre do mundo.", i: "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=400&q=60" },
-            { id: 10, n: "Salmão Pistache", p: 98, c: "principais", d: "Crosta de pistache e risoto limão.", i: "https://images.unsplash.com/photo-1467003909585-2f8a7270028d?auto=format&fit=crop&w=400&q=60" },
-            { id: 11, n: "Magret de Pato", p: 115, c: "principais", d: "Molho frutas vermelhas e mil folhas.", i: "https://images.unsplash.com/photo-1610437433890-5844a4b23234?auto=format&fit=crop&w=400&q=60" },
-            { id: 12, n: "Pasta Tartufo", p: 89, c: "principais", d: "Creme de trufas negras e cogumelos.", i: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=400&q=60" },
-            { id: 13, n: "Polvo Lagareiro", p: 130, c: "principais", d: "Polvo macio, batatas e alho confit.", i: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=400&q=60" },
-            { id: 14, n: "Carré Cordeiro", p: 125, c: "principais", d: "Crosta de ervas e cuscuz.", i: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=60" },
-            { id: 15, n: "Ravioli Búfala", p: 78, c: "principais", d: "Molho pomodoro rústico.", i: "https://images.unsplash.com/photo-1587740986335-9917fe06c88e?auto=format&fit=crop&w=400&q=60" },
-            { id: 16, n: "Esfera Choco", p: 45, c: "sobremesas", d: "Derrete com calda quente.", i: "https://images.unsplash.com/photo-1629851720888-5c4644558e86?auto=format&fit=crop&w=400&q=60" },
-            { id: 17, n: "Tiramisu", p: 38, c: "sobremesas", d: "Mascarpone e café expresso.", i: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&q=60" },
-            { id: 18, n: "Cheesecake", p: 35, c: "sobremesas", d: "Compota de frutas do bosque.", i: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=60" },
-            { id: 19, n: "Crème Brûlée", p: 32, c: "sobremesas", d: "Baunilha em fava.", i: "https://images.unsplash.com/photo-1470324161839-ce2bb6fa6bc3?auto=format&fit=crop&w=400&q=60" },
-            { id: 20, n: "Mousse Limão", p: 29, c: "sobremesas", d: "Merengue suíço.", i: "https://images.unsplash.com/photo-1549448882-b7e5e34796cb?auto=format&fit=crop&w=400&q=60" },
-            { id: 21, n: "Sorbet Manga", p: 25, c: "sobremesas", d: "Artesanal com pimenta rosa.", i: "https://images.unsplash.com/photo-1560008511-13958d5113d7?auto=format&fit=crop&w=400&q=60" },
-            { id: 22, n: "Gold Fashioned", p: 48, c: "drinks", d: "Bourbon e ouro comestível.", i: "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=400&q=60" },
-            { id: 23, n: "Gin Floral", p: 38, c: "drinks", d: "Hibisco e zimbro.", i: "https://images.unsplash.com/photo-1514362545857-3bc16549766b?auto=format&fit=crop&w=400&q=60" },
-            { id: 24, n: "Moscow Mule", p: 35, c: "drinks", d: "Espuma de gengibre.", i: "https://images.unsplash.com/photo-1530991802296-6e7880df9698?auto=format&fit=crop&w=400&q=60" },
-            { id: 25, n: "Negroni", p: 40, c: "drinks", d: "O clássico equilibrado.", i: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=400&q=60" },
-            { id: 26, n: "Cabernet", p: 120, c: "drinks", d: "Reserva, Chile (Garrafa).", i: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&q=60" },
-            { id: 27, n: "Veuve Clicquot", p: 450, c: "drinks", d: "Champagne Francês.", i: "https://images.unsplash.com/photo-1598155523122-38423ba4d6c3?auto=format&fit=crop&w=400&q=60" },
-            { id: 28, n: "Soda Italiana", p: 18, c: "drinks", d: "Maçã verde ou Morango.", i: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=400&q=60" },
-            { id: 29, n: "S. Pellegrino", p: 15, c: "drinks", d: "Com gás, 505ml.", i: "https://images.unsplash.com/photo-1560769396-f94e99507851?auto=format&fit=crop&w=400&q=60" },
-            { id: 30, n: "Espresso Martini", p: 42, c: "drinks", d: "Vodka e licor de café.", i: "https://images.unsplash.com/photo-1629247653495-2569502b4899?auto=format&fit=crop&w=400&q=60" }
+            // ENTRADAS
+            { id: 1, n: "Carpaccio Trufado", p: 68, c: "entradas", d: "Wagyu fatiado, azeite de trufas brancas e lascas de parmesão.", i: "https://images.unsplash.com/photo-1550950158-d0d960dff51b?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, n: "Tartare de Atum", p: 55, c: "entradas", d: "Atum fresco, abacate, gengibre e molho ponzu artesanal.", i: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, n: "Bruschetta Gold", p: 42, c: "entradas", d: "Burrata cremosa, tomate confit e finalização com pó de ouro.", i: "https://images.unsplash.com/photo-1506280754576-f6fa8a873550?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, n: "Ostras Gratinadas", p: 75, c: "entradas", d: "Ostras frescas gratinadas com queijo gruyère e ervas finas.", i: "https://images.unsplash.com/photo-1553241502-ade80503ef61?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, n: "Ceviche Molecular", p: 59, c: "entradas", d: "Peixe branco marinado com pérolas de leite de tigre e espuma cítrica.", i: "https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, n: "Croquetas de Pato", p: 48, c: "entradas", d: "Pato confitado com redução de laranja e geléia de pimenta.", i: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, n: "Salada Aura", p: 45, c: "entradas", d: "Mix de folhas nobres, figos frescos, nozes caramelizadas e balsâmico.", i: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" },
+            
+            // PRINCIPAIS
+            { id: 8, n: "Risoto de Lagosta", p: 145, c: "principais", d: "Arroz arbóreo cremoso com cauda de lagosta grelhada na manteiga de ervas.", i: "https://images.unsplash.com/photo-1534080564677-6e7a94098758?auto=format&fit=crop&w=600&q=80" },
+            { id: 9, n: "Wagyu A5 Steak", p: 280, c: "principais", d: "O corte mais nobre do mundo, selado com flor de sal e acompanhado de aligot.", i: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" },
+            { id: 10, n: "Salmão Pistache", p: 98, c: "principais", d: "Salmão em crosta de pistache com risoto de limão siciliano.", i: "https://images.unsplash.com/photo-1467003909585-2f8a7270028d?auto=format&fit=crop&w=600&q=80" },
+            { id: 11, n: "Magret de Pato", p: 115, c: "principais", d: "Peito de pato grelhado ao molho de frutas vermelhas e mil folhas de batata.", i: "https://images.unsplash.com/photo-1514517220617-dfbb72f0cdb1?auto=format&fit=crop&w=600&q=80" },
+            { id: 12, n: "Pasta Tartufo", p: 89, c: "principais", d: "Tagliatelle artesanal ao creme de trufas negras e cogumelos selvagens.", i: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80" },
+            { id: 13, n: "Polvo Lagareiro", p: 130, c: "principais", d: "Tentáculos de polvo macios, batatas ao murro e alho confitado em azeite extra virgem.", i: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80" },
+            { id: 14, n: "Carré Cordeiro", p: 125, c: "principais", d: "Carré em crosta de ervas de Provence acompanhado de cuscuz marroquino.", i: "https://images.unsplash.com/photo-1603048297172-c92544798d5a?auto=format&fit=crop&w=600&q=80" },
+            { id: 15, n: "Ravioli Búfala", p: 78, c: "principais", d: "Ravioli recheado com mussarela de búfala ao molho pomodoro rústico.", i: "https://images.unsplash.com/photo-1587740986335-9917fe06c88e?auto=format&fit=crop&w=600&q=80" },
+
+            // SOBREMESAS
+            { id: 16, n: "Esfera de Chocolate", p: 45, c: "sobremesas", d: "Esfera de chocolate belga que derrete com calda quente de avelã.", i: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=600&q=80" },
+            { id: 17, n: "Tiramisu Aura", p: 38, c: "sobremesas", d: "Receita clássica italiana com mascarpone e café expresso selecionado.", i: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=600&q=80" },
+            { id: 18, n: "Cheesecake Berries", p: 35, c: "sobremesas", d: "Creme leve de queijo com compota artesanal de frutas do bosque.", i: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80" },
+            { id: 19, n: "Crème Brûlée", p: 32, c: "sobremesas", d: "Creme de baunilha em fava com crosta de açúcar queimado no maçarico.", i: "https://images.unsplash.com/photo-1470324161839-ce2bb6fa6bc3?auto=format&fit=crop&w=600&q=80" },
+            { id: 20, n: "Mousse Limão", p: 29, c: "sobremesas", d: "Mousse areada de limão siciliano com suspiros de merengue suíço.", i: "https://images.unsplash.com/photo-1528451633346-73e73948b357?auto=format&fit=crop&w=600&q=80" },
+            { id: 21, n: "Sorbet de Manga", p: 25, c: "sobremesas", d: "Sorbet artesanal de manga com toque de pimenta rosa.", i: "https://images.unsplash.com/photo-1572384728084-39fa9ef312c1?auto=format&fit=crop&w=600&q=80" },
+
+            // DRINKS
+            { id: 22, n: "Gold Fashioned", p: 48, c: "drinks", d: "Releitura do clássico com Bourbon, angostura e folhas de ouro comestível.", i: "https://images.unsplash.com/photo-1514362545857-3bc16549766b?auto=format&fit=crop&w=600&q=80" },
+            { id: 23, n: "Gin Floral", p: 38, c: "drinks", d: "Gin premium, infusão de hibisco, zimbro e água tônica artesanal.", i: "https://images.unsplash.com/photo-1551538597-ca5568589083?auto=format&fit=crop&w=600&q=80" },
+            { id: 24, n: "Moscow Mule", p: 35, c: "drinks", d: "Vodka, suco de limão e nossa exclusiva espuma densa de gengibre.", i: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80" },
+            { id: 25, n: "Negroni", p: 40, c: "drinks", d: "O equilíbrio perfeito entre Gin, Campari e Vermute tinto.", i: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80" },
+            { id: 26, n: "Vinho Cabernet", p: 120, c: "drinks", d: "Reserva especial, notas de carvalho e frutas negras (Garrafa).", i: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" },
+            { id: 27, n: "Champagne Veuve", p: 450, c: "drinks", d: "Veuve Clicquot Brut, elegância e frescor para celebrações.", i: "https://images.unsplash.com/photo-1598155523122-38423ba4d6c3?auto=format&fit=crop&w=600&q=80" },
+            { id: 28, n: "Soda Italiana", p: 18, c: "drinks", d: "Refresco natural disponível nos sabores Maçã Verde ou Morango.", i: "https://images.unsplash.com/photo-1499638673689-79a0b5115d87?auto=format&fit=crop&w=600&q=80" },
+            { id: 29, n: "S. Pellegrino", p: 15, c: "drinks", d: "Água mineral com gás gaseificada na fonte, 505ml.", i: "https://images.unsplash.com/photo-1560769396-f94e99507851?auto=format&fit=crop&w=600&q=80" },
+            { id: 30, n: "Espresso Martini", p: 42, c: "drinks", d: "O encontro energético entre Vodka, licor de café e espresso extraído na hora.", i: "https://images.unsplash.com/photo-1629247653495-2569502b4899?auto=format&fit=crop&w=600&q=80" }
         ];
 
-        const state = {
-            cart: {},
-            filter: 'all',
-            search: ''
-        };
+        const state = { cart: {}, filter: 'all', search: '' };
 
-        /* =========================================
-           CORE FUNCTIONS (PERFORMANCE OPTIMIZED)
-           ========================================= */
-
-        // 1. Debounce para evitar recalculos excessivos na busca
         function debounce(func, wait) {
             let timeout;
             return function(...args) {
@@ -480,25 +459,15 @@
             };
         }
 
-        // 2. Formatador de Moeda (Memoizado se fosse app grande, aqui simples)
         const fmtMoney = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-        // 3. Gerenciamento do DOM (DocumentFragment para Batch Rendering)
         const grid = document.getElementById('grid');
         
         function renderMenu() {
-            // Limpa o grid atual
             grid.innerHTML = '';
-            
             const fragment = document.createDocumentFragment();
-            
-            // Filter Logic (Array Method otimizado)
             const items = DB.filter(item => {
                 const matchCat = state.filter === 'all' || item.c === state.filter;
-                // Busca otimizada: checa apenas se há texto antes de fazer includes
-                const matchSearch = !state.search || 
-                                    item.n.toLowerCase().includes(state.search) || 
-                                    item.d.toLowerCase().includes(state.search);
+                const matchSearch = !state.search || item.n.toLowerCase().includes(state.search) || item.d.toLowerCase().includes(state.search);
                 return matchCat && matchSearch;
             });
 
@@ -507,7 +476,6 @@
                 return;
             }
 
-            // Criação dos Cards
             items.forEach(item => {
                 const card = document.createElement('article');
                 card.className = 'dish-card glass reveal-node';
@@ -529,57 +497,39 @@
                 `;
                 fragment.appendChild(card);
             });
-
             grid.appendChild(fragment);
-            
-            // Reinicia observadores para os novos elementos
             observeElements();
         }
 
-        /* =========================================
-           INTERSECTION OBSERVER (Lazy Load & Animation)
-           ========================================= */
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-        
         const animationObserver = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    
-                    // Lazy Load imagem customizado (troca data-src por src)
                     const img = entry.target.querySelector('img[data-src]');
                     if(img) {
                         img.src = img.dataset.src;
                         img.onload = () => img.classList.add('loaded');
                         img.removeAttribute('data-src');
                     }
-                    
                     obs.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         function observeElements() {
             document.querySelectorAll('.reveal-node').forEach(el => animationObserver.observe(el));
         }
 
-        /* =========================================
-           EVENT DELEGATION (Memory Optimization)
-           ========================================= */
-        // Um único listener para todo o grid
         grid.addEventListener('click', (e) => {
             const btn = e.target.closest('.add-btn');
             if(btn) {
                 const id = parseInt(btn.dataset.id);
                 addToCart(id);
-                
-                // Feedback visual simples
                 btn.style.transform = "scale(0.9)";
                 setTimeout(() => btn.style.transform = "scale(1)", 150);
             }
         });
 
-        // Filtros
         document.getElementById('catFilters').addEventListener('click', (e) => {
             if(e.target.classList.contains('cat-btn')) {
                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -589,15 +539,11 @@
             }
         });
 
-        // Busca com Debounce
         document.getElementById('search').addEventListener('input', debounce((e) => {
             state.search = e.target.value.toLowerCase();
             renderMenu();
         }, 300));
 
-        /* =========================================
-           CART LOGIC
-           ========================================= */
         const cartDrawer = document.getElementById('drawer');
         const cartOverlay = document.getElementById('overlay');
         const cartCountEl = document.getElementById('cartCount');
@@ -605,30 +551,20 @@
         const cartTotalEl = document.getElementById('cartTotal');
 
         function addToCart(id) {
-            if(state.cart[id]) state.cart[id]++;
-            else state.cart[id] = 1;
+            state.cart[id] = (state.cart[id] || 0) + 1;
             updateCartUI();
             openCart();
         }
 
-        function removeFromCart(id) {
-            delete state.cart[id];
-            updateCartUI();
-        }
-
         function updateQty(id, delta) {
-            if(state.cart[id] + delta <= 0) removeFromCart(id);
-            else {
-                state.cart[id] += delta;
-                updateCartUI();
-            }
+            if(state.cart[id] + delta <= 0) delete state.cart[id];
+            else state.cart[id] += delta;
+            updateCartUI();
         }
 
         function updateCartUI() {
             cartItemsEl.innerHTML = '';
-            let total = 0;
-            let count = 0;
-            
+            let total = 0, count = 0;
             const ids = Object.keys(state.cart);
             
             if(ids.length === 0) {
@@ -640,13 +576,12 @@
                     const qty = state.cart[id];
                     total += item.p * qty;
                     count += qty;
-
                     const el = document.createElement('div');
-                    el.style.cssText = 'display:flex; gap:15px; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05); animation: fade 0.3s';
+                    el.style.cssText = 'display:flex; gap:15px; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05);';
                     el.innerHTML = `
                         <img src="${item.i}" style="width:60px; height:60px; border-radius:8px; object-fit:cover">
                         <div style="flex:1">
-                            <h4 style="font-size:0.95rem">${item.n}</h4>
+                            <h4 style="font-size:0.95rem; color:#fff">${item.n}</h4>
                             <div style="color:var(--primary-gold); font-size:0.9rem">${fmtMoney.format(item.p)}</div>
                             <div style="display:flex; align-items:center; gap:10px; margin-top:5px">
                                 <button onclick="updateQty(${id}, -1)" style="width:24px;height:24px;border-radius:4px;background:#334155;color:white;border:none;cursor:pointer">-</button>
@@ -659,22 +594,17 @@
                 });
                 cartItemsEl.appendChild(fragment);
             }
-            
             cartTotalEl.innerText = fmtMoney.format(total);
             cartCountEl.innerText = count;
         }
 
-        // Drawer Controls
         function openCart() { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); }
         function closeCartFn() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
-        
         document.getElementById('cartBtn').addEventListener('click', openCart);
         document.getElementById('closeCart').addEventListener('click', closeCartFn);
         cartOverlay.addEventListener('click', closeCartFn);
 
-        // Inicialização
         renderMenu();
-
     </script>
 </body>
 </html>
