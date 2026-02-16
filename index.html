@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aura Gastronomia Fusion - Cardápio digital de luxo com experiência imersiva e alta performance.">
+    <meta name="theme-color" content="#0f172a">
+    <title>Aura Gastronomia Fusion | Performance Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
+    <style>
+        /* ==========================================================================
+           CRITICAL CSS (First Paint Optimization)
+           ========================================================================== */
+        :root {
+            --bg-body: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-glass: rgba(30, 41, 59, 0.75);
+            --primary-gold: #fbbf24;
+            --primary-gold-dim: #b45309;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --shadow-soft: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+            --header-h: 80px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Classes Utilitárias de Aceleração de Hardware */
+        .gpu-accelerate {
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Glassmorphism Otimizado (backdrop-filter pode ser pesado, usado com moderação) */
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--header-h);
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.9);
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            font-weight: 700;
+        }
+
+        /* Hero Section (Critical Fold) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            /* Gradiente CSS puro no lugar de imagem pesada inicial */
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            padding-top: var(--header-h);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Imagem de fundo carregada via CSS mas com opacidade reduzida */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1514362545857-3bc16549766b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=60') center/cover no-repeat;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 20px;
+            /* Animação inicial apenas com opacity/transform */
+            opacity: 0;
+            animation: heroFadeIn 1s ease-out forwards;
+        }
+
+        @keyframes heroFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fce7f3, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Botões */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-gold {
+            background-color: var(--primary-gold);
+            color: #0f172a;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Layout Grid e Cards */
+        .menu-section {
+            padding: 80px 0;
+            /* Content Visibility: Melhora performance de renderização em páginas longas */
+            content-visibility: auto; 
+            contain-intrinsic-size: 1000px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .dish-card {
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            will-change: transform; /* Dica para o browser preparar otimização */
+            position: relative;
+        }
+        
+        .dish-card:hover {
+            transform: translateY(-8px);
+        }
+
+        /* CLS Prevention: Aspect Ratio Container */
+        .img-container {
+            width: 100%;
+            aspect-ratio: 16/10;
+            background-color: #1e293b; /* Placeholder color */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .dish-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .dish-img.loaded {
+            opacity: 1;
+        }
+
+        .dish-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        /* Inputs e Filtros */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .search-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 30px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-glass);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .cats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .cat-btn {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .cat-btn.active, .cat-btn:hover {
+            background: var(--primary-gold);
+            color: #0f172a;
+            border-color: var(--primary-gold);
+        }
+
+        /* Cart Drawer (Off-canvas) */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(2px);
+        }
+        
+        .drawer {
+            position: fixed;
+            top: 0; right: 0; bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background: #151d2e;
+            z-index: 1002;
+            transform: translate3d(100%, 0, 0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+        }
+
+        .drawer.open { transform: translate3d(0,0,0); }
+        .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        /* Utilitários de Fade/Slide para JS Observer */
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal-node.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Nav Desktop */
+        nav ul { display: flex; gap: 30px; list-style: none; }
+        nav a { color: var(--text-main); font-weight: 500; font-size: 0.9rem; }
+        
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="glass">
+        <div class="container header-inner">
+            <div class="logo">Aura</div>
+            <nav>
+                <ul>
+                    <li><a href="#hero">Início</a></li>
+                    <li><a href="#menu">Cardápio</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                </ul>
+            </nav>
+            <button id="cartBtn" class="btn" style="color: white; font-size: 1.2rem;">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span id="cartCount" style="margin-left: 5px; font-size: 0.9rem; color: var(--primary-gold);">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero">
+            <div class="hero-content gpu-accelerate">
+                <h1>Gastronomia<br>Fusion & Art</h1>
+                <p style="color: #cbd5e1; margin-bottom: 2rem; font-size: 1.1rem;">A intersecção entre o clássico e o molecular.</p>
+                <a href="#menu" class="btn btn-gold">Explorar Menu</a>
+            </div>
+        </section>
+
+        <section id="menu" class="menu-section">
+            <div class="container">
+                <div class="controls reveal-node">
+                    <div class="search-wrap">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="search" class="search-input" placeholder="Buscar experiência..." aria-label="Buscar prato">
+                    </div>
+                    <div class="cats" id="catFilters">
+                        <button class="cat-btn active" data-cat="all">Todos</button>
+                        <button class="cat-btn" data-cat="entradas">Entradas</button>
+                        <button class="cat-btn" data-cat="principais">Principais</button>
+                        <button class="cat-btn" data-cat="sobremesas">Sobremesas</button>
+                        <button class="cat-btn" data-cat="drinks">Drinks</button>
+                    </div>
+                </div>
+
+                <div id="grid" class="menu-grid"></div>
+            </div>
+        </section>
+
+        <section id="about" style="padding: 100px 0; background: var(--bg-surface);">
+            <div class="container reveal-node" style="text-align: center; max-width: 700px;">
+                <h2 style="font-family: var(--font-serif); color: var(--primary-gold); font-size: 2.5rem; margin-bottom: 1rem;">Sobre Nós</h2>
+                <p style="color: var(--text-muted);">Uma experiência sensorial desenhada para elevar o paladar. Ingredientes orgânicos, técnicas sustentáveis e uma atmosfera inesquecível.</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="drawer-overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer">
+        <div style="padding: 20px; border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between;">
+            <h3 style="font-family: var(--font-serif); color: var(--primary-gold);">Seu Pedido</h3>
+            <button id="closeCart" style="background:none; border:none; color:white; font-size: 1.2rem; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-body" id="cartItems">
+            </div>
+        <div style="padding: 20px; background: rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem; margin-bottom: 1rem;">
+                <span>Total</span>
+                <span id="cartTotal" style="color: var(--primary-gold);">R$ 0,00</span>
+            </div>
+            <button class="btn btn-gold" style="width: 100%; justify-content: center;">Finalizar</button>
+        </div>
+    </aside>
+
+    <script defer>
+        /* =========================================
+           DADOS E ESTADO (DATABASE & STATE)
+           ========================================= */
+        const DB = [
+            { id: 1, n: "Carpaccio Trufado", p: 68, c: "entradas", d: "Wagyu, azeite trufado e parmesão.", i: "https://images.unsplash.com/photo-1544510802-5e4c02927233?auto=format&fit=crop&w=400&q=60" },
+            { id: 2, n: "Tartare de Atum", p: 55, c: "entradas", d: "Atum fresco, abacate e ponzu.", i: "https://images.unsplash.com/photo-1548602705-7f3945a0b59b?auto=format&fit=crop&w=400&q=60" },
+            { id: 3, n: "Bruschetta Gold", p: 42, c: "entradas", d: "Burrata, tomate confit e pó de ouro.", i: "https://images.unsplash.com/photo-1572695157369-a29444a82f10?auto=format&fit=crop&w=400&q=60" },
+            { id: 4, n: "Ostras Gratinadas", p: 75, c: "entradas", d: "Ostras frescas com queijo gruyère.", i: "https://images.unsplash.com/photo-1550951179-81878d2273e0?auto=format&fit=crop&w=400&q=60" },
+            { id: 5, n: "Ceviche Molecular", p: 59, c: "entradas", d: "Peixe branco e espuma cítrica.", i: "https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?auto=format&fit=crop&w=400&q=60" },
+            { id: 6, n: "Croquetas de Pato", p: 48, c: "entradas", d: "Pato confit com geléia de pimenta.", i: "https://images.unsplash.com/photo-1598108422770-e4142f36f882?auto=format&fit=crop&w=400&q=60" },
+            { id: 7, n: "Salada Aura", p: 45, c: "entradas", d: "Figos, nozes e redução balsâmica.", i: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=400&q=60" },
+            { id: 8, n: "Risoto de Lagosta", p: 145, c: "principais", d: "Arroz arbóreo e cauda grelhada.", i: "https://images.unsplash.com/photo-1595295333158-4742f28fbd85?auto=format&fit=crop&w=400&q=60" },
+            { id: 9, n: "Wagyu A5 Steak", p: 280, c: "principais", d: "O corte mais nobre do mundo.", i: "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=400&q=60" },
+            { id: 10, n: "Salmão Pistache", p: 98, c: "principais", d: "Crosta de pistache e risoto limão.", i: "https://images.unsplash.com/photo-1467003909585-2f8a7270028d?auto=format&fit=crop&w=400&q=60" },
+            { id: 11, n: "Magret de Pato", p: 115, c: "principais", d: "Molho frutas vermelhas e mil folhas.", i: "https://images.unsplash.com/photo-1610437433890-5844a4b23234?auto=format&fit=crop&w=400&q=60" },
+            { id: 12, n: "Pasta Tartufo", p: 89, c: "principais", d: "Creme de trufas negras e cogumelos.", i: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=400&q=60" },
+            { id: 13, n: "Polvo Lagareiro", p: 130, c: "principais", d: "Polvo macio, batatas e alho confit.", i: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=400&q=60" },
+            { id: 14, n: "Carré Cordeiro", p: 125, c: "principais", d: "Crosta de ervas e cuscuz.", i: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=60" },
+            { id: 15, n: "Ravioli Búfala", p: 78, c: "principais", d: "Molho pomodoro rústico.", i: "https://images.unsplash.com/photo-1587740986335-9917fe06c88e?auto=format&fit=crop&w=400&q=60" },
+            { id: 16, n: "Esfera Choco", p: 45, c: "sobremesas", d: "Derrete com calda quente.", i: "https://images.unsplash.com/photo-1629851720888-5c4644558e86?auto=format&fit=crop&w=400&q=60" },
+            { id: 17, n: "Tiramisu", p: 38, c: "sobremesas", d: "Mascarpone e café expresso.", i: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&q=60" },
+            { id: 18, n: "Cheesecake", p: 35, c: "sobremesas", d: "Compota de frutas do bosque.", i: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=60" },
+            { id: 19, n: "Crème Brûlée", p: 32, c: "sobremesas", d: "Baunilha em fava.", i: "https://images.unsplash.com/photo-1470324161839-ce2bb6fa6bc3?auto=format&fit=crop&w=400&q=60" },
+            { id: 20, n: "Mousse Limão", p: 29, c: "sobremesas", d: "Merengue suíço.", i: "https://images.unsplash.com/photo-1549448882-b7e5e34796cb?auto=format&fit=crop&w=400&q=60" },
+            { id: 21, n: "Sorbet Manga", p: 25, c: "sobremesas", d: "Artesanal com pimenta rosa.", i: "https://images.unsplash.com/photo-1560008511-13958d5113d7?auto=format&fit=crop&w=400&q=60" },
+            { id: 22, n: "Gold Fashioned", p: 48, c: "drinks", d: "Bourbon e ouro comestível.", i: "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?auto=format&fit=crop&w=400&q=60" },
+            { id: 23, n: "Gin Floral", p: 38, c: "drinks", d: "Hibisco e zimbro.", i: "https://images.unsplash.com/photo-1514362545857-3bc16549766b?auto=format&fit=crop&w=400&q=60" },
+            { id: 24, n: "Moscow Mule", p: 35, c: "drinks", d: "Espuma de gengibre.", i: "https://images.unsplash.com/photo-1530991802296-6e7880df9698?auto=format&fit=crop&w=400&q=60" },
+            { id: 25, n: "Negroni", p: 40, c: "drinks", d: "O clássico equilibrado.", i: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=400&q=60" },
+            { id: 26, n: "Cabernet", p: 120, c: "drinks", d: "Reserva, Chile (Garrafa).", i: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&q=60" },
+            { id: 27, n: "Veuve Clicquot", p: 450, c: "drinks", d: "Champagne Francês.", i: "https://images.unsplash.com/photo-1598155523122-38423ba4d6c3?auto=format&fit=crop&w=400&q=60" },
+            { id: 28, n: "Soda Italiana", p: 18, c: "drinks", d: "Maçã verde ou Morango.", i: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=400&q=60" },
+            { id: 29, n: "S. Pellegrino", p: 15, c: "drinks", d: "Com gás, 505ml.", i: "https://images.unsplash.com/photo-1560769396-f94e99507851?auto=format&fit=crop&w=400&q=60" },
+            { id: 30, n: "Espresso Martini", p: 42, c: "drinks", d: "Vodka e licor de café.", i: "https://images.unsplash.com/photo-1629247653495-2569502b4899?auto=format&fit=crop&w=400&q=60" }
+        ];
+
+        const state = {
+            cart: {},
+            filter: 'all',
+            search: ''
+        };
+
+        /* =========================================
+           CORE FUNCTIONS (PERFORMANCE OPTIMIZED)
+           ========================================= */
+
+        // 1. Debounce para evitar recalculos excessivos na busca
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        // 2. Formatador de Moeda (Memoizado se fosse app grande, aqui simples)
+        const fmtMoney = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // 3. Gerenciamento do DOM (DocumentFragment para Batch Rendering)
+        const grid = document.getElementById('grid');
+        
+        function renderMenu() {
+            // Limpa o grid atual
+            grid.innerHTML = '';
+            
+            const fragment = document.createDocumentFragment();
+            
+            // Filter Logic (Array Method otimizado)
+            const items = DB.filter(item => {
+                const matchCat = state.filter === 'all' || item.c === state.filter;
+                // Busca otimizada: checa apenas se há texto antes de fazer includes
+                const matchSearch = !state.search || 
+                                    item.n.toLowerCase().includes(state.search) || 
+                                    item.d.toLowerCase().includes(state.search);
+                return matchCat && matchSearch;
+            });
+
+            if(items.length === 0) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#94a3b8;padding:40px">Nenhum prato encontrado.</div>';
+                return;
+            }
+
+            // Criação dos Cards
+            items.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'dish-card glass reveal-node';
+                card.innerHTML = `
+                    <div class="img-container">
+                        <img data-src="${item.i}" alt="${item.n}" class="dish-img" loading="lazy">
+                    </div>
+                    <div class="dish-info">
+                        <h3 style="font-family:var(--font-serif); font-size:1.2rem; color:#fff">${item.n}</h3>
+                        <p style="color:var(--text-muted); font-size:0.9rem; margin-top:5px; flex:1">${item.d}</p>
+                        <div class="price-row">
+                            <span style="color:var(--primary-gold); font-weight:600; font-size:1.1rem">${fmtMoney.format(item.p)}</span>
+                            <button class="btn add-btn" data-id="${item.id}" aria-label="Adicionar ${item.n} ao carrinho" 
+                                style="background:var(--bg-surface); border:1px solid var(--border-glass); border-radius:50%; width:36px; height:36px; padding:0; justify-content:center; color:#fff">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                fragment.appendChild(card);
+            });
+
+            grid.appendChild(fragment);
+            
+            // Reinicia observadores para os novos elementos
+            observeElements();
+        }
+
+        /* =========================================
+           INTERSECTION OBSERVER (Lazy Load & Animation)
+           ========================================= */
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        
+        const animationObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Lazy Load imagem customizado (troca data-src por src)
+                    const img = entry.target.querySelector('img[data-src]');
+                    if(img) {
+                        img.src = img.dataset.src;
+                        img.onload = () => img.classList.add('loaded');
+                        img.removeAttribute('data-src');
+                    }
+                    
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        function observeElements() {
+            document.querySelectorAll('.reveal-node').forEach(el => animationObserver.observe(el));
+        }
+
+        /* =========================================
+           EVENT DELEGATION (Memory Optimization)
+           ========================================= */
+        // Um único listener para todo o grid
+        grid.addEventListener('click', (e) => {
+            const btn = e.target.closest('.add-btn');
+            if(btn) {
+                const id = parseInt(btn.dataset.id);
+                addToCart(id);
+                
+                // Feedback visual simples
+                btn.style.transform = "scale(0.9)";
+                setTimeout(() => btn.style.transform = "scale(1)", 150);
+            }
+        });
+
+        // Filtros
+        document.getElementById('catFilters').addEventListener('click', (e) => {
+            if(e.target.classList.contains('cat-btn')) {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                state.filter = e.target.dataset.cat;
+                renderMenu();
+            }
+        });
+
+        // Busca com Debounce
+        document.getElementById('search').addEventListener('input', debounce((e) => {
+            state.search = e.target.value.toLowerCase();
+            renderMenu();
+        }, 300));
+
+        /* =========================================
+           CART LOGIC
+           ========================================= */
+        const cartDrawer = document.getElementById('drawer');
+        const cartOverlay = document.getElementById('overlay');
+        const cartCountEl = document.getElementById('cartCount');
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartTotalEl = document.getElementById('cartTotal');
+
+        function addToCart(id) {
+            if(state.cart[id]) state.cart[id]++;
+            else state.cart[id] = 1;
+            updateCartUI();
+            openCart();
+        }
+
+        function removeFromCart(id) {
+            delete state.cart[id];
+            updateCartUI();
+        }
+
+        function updateQty(id, delta) {
+            if(state.cart[id] + delta <= 0) removeFromCart(id);
+            else {
+                state.cart[id] += delta;
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            cartItemsEl.innerHTML = '';
+            let total = 0;
+            let count = 0;
+            
+            const ids = Object.keys(state.cart);
+            
+            if(ids.length === 0) {
+                cartItemsEl.innerHTML = '<p style="text-align:center; color:#94a3b8; margin-top:20px">Seu carrinho está vazio.</p>';
+            } else {
+                const fragment = document.createDocumentFragment();
+                ids.forEach(id => {
+                    const item = DB.find(x => x.id == id);
+                    const qty = state.cart[id];
+                    total += item.p * qty;
+                    count += qty;
+
+                    const el = document.createElement('div');
+                    el.style.cssText = 'display:flex; gap:15px; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05); animation: fade 0.3s';
+                    el.innerHTML = `
+                        <img src="${item.i}" style="width:60px; height:60px; border-radius:8px; object-fit:cover">
+                        <div style="flex:1">
+                            <h4 style="font-size:0.95rem">${item.n}</h4>
+                            <div style="color:var(--primary-gold); font-size:0.9rem">${fmtMoney.format(item.p)}</div>
+                            <div style="display:flex; align-items:center; gap:10px; margin-top:5px">
+                                <button onclick="updateQty(${id}, -1)" style="width:24px;height:24px;border-radius:4px;background:#334155;color:white;border:none;cursor:pointer">-</button>
+                                <span>${qty}</span>
+                                <button onclick="updateQty(${id}, 1)" style="width:24px;height:24px;border-radius:4px;background:var(--primary-gold);color:#000;border:none;cursor:pointer">+</button>
+                            </div>
+                        </div>
+                    `;
+                    fragment.appendChild(el);
+                });
+                cartItemsEl.appendChild(fragment);
+            }
+            
+            cartTotalEl.innerText = fmtMoney.format(total);
+            cartCountEl.innerText = count;
+        }
+
+        // Drawer Controls
+        function openCart() { cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); }
+        function closeCartFn() { cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
+        
+        document.getElementById('cartBtn').addEventListener('click', openCart);
+        document.getElementById('closeCart').addEventListener('click', closeCartFn);
+        cartOverlay.addEventListener('click', closeCartFn);
+
+        // Inicialização
+        renderMenu();
+
+    </script>
+</body>
+</html>
