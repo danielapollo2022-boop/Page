@@ -641,3 +641,20 @@ footer {
     .input-group { flex-direction: column; }
     .cart-drawer { max-width: 100%; right: -100%; }
 }
+/* Torna a imagem clicável visualmente */
+.card-image {
+    cursor: pointer;
+    position: relative; /* Mantém contexto para tags absolutas */
+}
+
+/* Opcional: Efeito visual ao passar o mouse na imagem para indicar link */
+.card-image:hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+}
